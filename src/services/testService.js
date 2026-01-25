@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/health`;
+const BASE_URL = `/health`;
 
 async function test() {
   // Step 1: Get the token from localStorage
