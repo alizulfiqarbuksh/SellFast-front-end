@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import * as cartitemService from '../../services/cartitemService'
+import * as orderService from '../../services/orderService'
 
 
 function CartItem() {
@@ -30,6 +31,28 @@ function CartItem() {
     if (id) cartItems(id)
 
   }, [id])
+
+    const handleAddOrder = async () => {
+      if (!cartitems || cartitems.length === 0) return;
+
+       orderPayload = {
+        user_id: 0,
+        total_price: 0,
+        items: cartitems.map(cartItem => ({
+        product_id: cartItem.product_id,
+        product_name: "",
+        price: 0,
+        quantity: cartItem.quantity
+        }))
+      };
+      try {
+        await orderService.create(orderPayload);
+        navigate("/orders");
+      } catch (error) {
+        console.log(error.response?.data || error);
+        alert("Failed to create order");
+      }
+    };
 
   const handleDelete = async (id) => {
     try {
@@ -100,9 +123,8 @@ function CartItem() {
       >
         Update Quantity
       </button>
-
             <div>
-              <button>Add Order</button>
+              <button onClick={handleAddOrder}>Add Order</button>
             </div>
       </div>
     ))}
