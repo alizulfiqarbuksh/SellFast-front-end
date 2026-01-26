@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import * as productService from '../../services/productService'
+import ImageUpload from '../ImageUpload/ImageUpload'
 
 function ProductForm({user}) {
 
@@ -14,7 +15,8 @@ function ProductForm({user}) {
     description: "",
     price: "",
     stock: "",
-    is_available: true
+    is_available: true,
+    image: ""
   })
 
   const [loading, setLoading] = useState(true)
@@ -90,9 +92,17 @@ function ProductForm({user}) {
         <label htmlFor="is_available">Available: </label>
         <input onChange={handleChange} type="checkbox" id='is_available' name='is_available' checked={formData.is_available} />
 
+        <ImageUpload
+            onUpload={(url) =>
+              setFormData(prev => ({ ...prev, image: url }))
+            }
+          />
+
         <button type="submit">{isEdit ? 'Update' : 'Add'}</button>
 
       </form>
+
+      {formData.image && <img src={formData.image} alt="Uploaded preview" style={{ width: '300px' }} />}
 
     </div>
   )
