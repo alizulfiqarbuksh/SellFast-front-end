@@ -13,8 +13,11 @@ async function signUp(formData) {
   // Step 3: Get the token from the response
   const token = data.token;
 
+  const cartId = data.cart_id;
+
   // Step 4: Save the token to localStorage
   window.localStorage.setItem('token', token);
+  window.localStorage.setItem('cartId', cartId);
 
   // Step 5: Decode the token to get user data
   const tokenParts = token.split('.');
@@ -22,6 +25,8 @@ async function signUp(formData) {
   const decodedPayload = window.atob(encodedPayload);
   const parsedPayload = JSON.parse(decodedPayload);
   const user = parsedPayload;
+
+  user.cartId = cartId;
 
   // Step 6: Return the user data
   return user;
@@ -37,8 +42,11 @@ async function signIn(formData) {
   // Step 3: Get the token from the response
   const token = data.token;
 
+  const cartId = data.cart_id;
+
   // Step 4: Save the token to localStorage
   window.localStorage.setItem('token', token);
+  window.localStorage.setItem('cartId', cartId);
 
   // Step 5: Decode the token to get user data
   const tokenParts = token.split('.');
@@ -46,6 +54,8 @@ async function signIn(formData) {
   const decodedPayload = window.atob(encodedPayload);
   const parsedPayload = JSON.parse(decodedPayload);
   const user = parsedPayload
+
+  user.cartId = cartId;
 
   // Step 6: Return the user data
   return user;
