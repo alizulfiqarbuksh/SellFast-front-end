@@ -26,7 +26,7 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard /> : <Landing />} />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
-        <Route path='/products' element={<Product />} />
+        <Route path='/products' element={<Product user={user} />} />
         <Route path='/products/:id' element={<ProductDetails user={user} />} />
         <Route path='/products/create' element={<ProductForm user={user}/>} />
         <Route path='/products/:id/update' element={<ProductForm user={user}/>} />
