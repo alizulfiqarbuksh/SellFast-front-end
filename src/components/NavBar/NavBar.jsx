@@ -25,6 +25,7 @@ const NavBar = () => {
           {user.is_admin && (
             <li><Link to='/products/create'>Add new product</Link></li>
           )}
+          <li><Link to='/cart-items'>cart items</Link></li>
         </ul>
       ) : (
         <ul>
