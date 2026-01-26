@@ -27,7 +27,17 @@ const create = async (orderData) => {
   }
 };
 
+const getOne = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${id}`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export{
   show,
-  create
+  create,
+  getOne
 }
