@@ -10,6 +10,9 @@ import Product from './components/Product/Product';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import ProductForm from './components/CreateProduct/ProductForm';
 import CartItem from './components/CartItem/CartItem';
+import Order from './components/Order/Order';
+import OrderDetails from './components/OrderDetails/OrderDetails';
+
 
 import { UserContext } from './contexts/UserContext';
 
@@ -32,6 +35,8 @@ const App = () => {
         <Route path='/products/:id/update' element={<ProductForm user={user}/>} />
         <Route path='/cart-items/:id' element={<CartItem/>}/>
         <Route path='cart-items/:id/update' element={<CartItem/>}/>
+        <Route path='/orders' element={<Order user={user}/>}/>
+        <Route path='/orders/:id' element={<OrderDetails user={user} />} />
       </Routes>
     </>
   );
