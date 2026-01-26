@@ -11,6 +11,8 @@ function CartItem() {
 
   const navigate = useNavigate()
 
+  
+
   useEffect(() => {
 
     const cartItems = async (id) => {
@@ -41,12 +43,15 @@ function CartItem() {
     }
   }
 
-// const deleteCartItem = (id) => {
+  
+  const handleSubmit = async (itemId, quantity) => {
+  try {
+    await cartitemService.update(itemId, { quantity })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-//   const newCartItemList = cartitems.filter(pokemon => pokemon._id !== id)
-
-//   setPokemons(newPokemonList)
-// }
 
 
   if (!cartitems) {
@@ -55,7 +60,8 @@ function CartItem() {
 
   return (
   <div>
-    <h1>Cart Items</h1>
+    
+      <h1>Cart Items</h1>
 
     {cartitems.map(item => (
       <div key={item.id}>
@@ -63,8 +69,38 @@ function CartItem() {
         <h3>Quantity: {item.quantity}</h3>
         <button onClick={() => handleDelete(item.id)}>Delete</button>
 
+        <div>
+          <label htmlFor='quantity'>Quantity:</label>
+          <input
+            type="number"
+            min="1"
+            value={item.quantity}
+            onChange={(e) =>
+              setCardItem(prev =>
+                prev.map(ci =>
+                  ci.id === item.id
+                    ? { ...ci, quantity: Number(e.target.value) }
+                    : ci
+                )
+              )
+            }
+/>
+
+        </div>
+        
+        <button
+        type="button"
+        onClick={() => handleSubmit(item.id, item.quantity)}
+      >
+        Update Quantity
+      </button>
+
+            <div>
+              <button>Add Order</button>
+            </div>
       </div>
     ))}
+    
   </div>
 )
 

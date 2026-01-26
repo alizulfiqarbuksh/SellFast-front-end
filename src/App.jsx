@@ -24,6 +24,7 @@ const App = () => {
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
         <Route path='/cart-items/:id' element={<CartItem/>}/>
+        <Route path='cart-items/:id/update' element={<CartItem/>}/>
       </Routes>
     </>
   );

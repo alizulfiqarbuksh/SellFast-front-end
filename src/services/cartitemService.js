@@ -30,8 +30,21 @@ const deleteOne = async (id) => {
   }
 }
 
+const update = async (id, cartItem) => {
+  try {
+
+    const token = localStorage.getItem('token')
+    const response = await axios.put(`${BASE_URL}/${id}`, cartItem, {headers: {Authorization: `Bearer ${token}`}})
+    return response.data
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export{
     getCartItems,
-    deleteOne
+    deleteOne,
+    update
 }
