@@ -26,9 +26,11 @@ const details = async (id) => {
 
 const deleteOne = async (id) => {
   try{
+
     const token = localStorage.getItem('token')
     const response = await axios.delete(`${BASE_URL}/${id}`, {headers: {Authorization: `Bearer ${token}`}})
     return response.data
+    
   } catch(error){
     console.log(error)
   }

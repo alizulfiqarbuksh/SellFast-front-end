@@ -22,7 +22,9 @@ const NavBar = () => {
           <li><Link to='/'>Dashboard</Link></li>
           <li><Link to='/' onClick={handleSignOut}>Sign Out</Link></li>
           <li><Link to='/products'>Products</Link></li>
-          <li><Link to='/products/create'>Add new product</Link></li>
+          {user.is_admin && (
+            <li><Link to='/products/create'>Add new product</Link></li>
+          )}
         </ul>
       ) : (
         <ul>
