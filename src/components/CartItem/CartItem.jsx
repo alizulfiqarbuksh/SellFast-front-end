@@ -35,7 +35,7 @@ function CartItem() {
     const handleAddOrder = async () => {
       if (!cartitems || cartitems.length === 0) return;
 
-       orderPayload = {
+       const orderPayload = {
         user_id: 0,
         total_price: 0,
         items: cartitems.map(cartItem => ({
@@ -123,14 +123,13 @@ function CartItem() {
       >
         Update Quantity
       </button>
-            <div>
-              <button onClick={handleAddOrder}>Add Order</button>
-            </div>
       </div>
     ))}
 
     <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
-    
+            <div>
+              <button onClick={handleAddOrder}>Add Order</button>
+            </div>
   </div>
 )
 
