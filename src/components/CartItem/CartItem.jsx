@@ -15,6 +15,7 @@ function CartItem() {
 
   useEffect(() => {
 
+
     const cartItems = async (id) => {
       try {
 
@@ -58,6 +59,9 @@ function CartItem() {
     return <p>Loading...</p>
   }
 
+
+    const totalPrice = cartitems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+
   return (
   <div>
     
@@ -66,6 +70,8 @@ function CartItem() {
     {cartitems.map(item => (
       <div key={item.id}>
         <h2>Product ID: {item.product_id}</h2>
+        <h2>Product: {item.product_name}</h2>
+        <h3>Price: ${item.price.toFixed(2)}</h3> 
         <h3>Quantity: {item.quantity}</h3>
         <button onClick={() => handleDelete(item.id)}>Delete</button>
 
@@ -100,6 +106,8 @@ function CartItem() {
             </div>
       </div>
     ))}
+
+    <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
     
   </div>
 )
