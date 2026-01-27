@@ -41,7 +41,6 @@ const App = () => {
           </ProtectedAdminRoute>
         } 
         />
-        
         <Route path='/products/:id/update' element={<ProtectedAdminRoute user={user}>
           <ProductForm user={user}/></ProtectedAdminRoute>
         } 
