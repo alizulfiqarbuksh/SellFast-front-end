@@ -45,13 +45,6 @@ function ProductDetails({user}) {
 
   }
 
-  // const deleteProduct = (id) => {
-
-  //   const newProductList = product.filter(pokemon => pokemon._id !== id)
-
-  //   setPokemons(newPokemonList)
-  // }
-
   if (!product) {
     return <p>Loading...</p>
   }
@@ -60,6 +53,7 @@ function ProductDetails({user}) {
     <div>
       <h1>ProductDetails</h1>
       <div>
+        {product.image && <img src={product.image} alt="Uploaded preview" style={{ width: '300px' }} />}
         <h3>Name: {product.name}</h3>
         <h4>Description: {product.description}</h4>
         <p>price: {product.price}</p>

@@ -13,6 +13,8 @@ const getUserFromToken = () => {
   const parsedPayload = JSON.parse(decodedPayload)
   const user = parsedPayload
 
+  user.cartId = Number(localStorage.getItem('cartId'));
+
   return user
 };
 

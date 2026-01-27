@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import * as cartitemService from '../../services/cartitemService'
+import * as orderService from '../../services/orderService'
 
 
 function CartItem() {
@@ -14,6 +15,7 @@ function CartItem() {
   
 
   useEffect(() => {
+
 
     const cartItems = async (id) => {
       try {
@@ -29,6 +31,28 @@ function CartItem() {
     if (id) cartItems(id)
 
   }, [id])
+
+    const handleAddOrder = async () => {
+      if (!cartitems || cartitems.length === 0) return;
+
+       const orderPayload = {
+        user_id: 0,
+        total_price: 0,
+        items: cartitems.map(cartItem => ({
+        product_id: cartItem.product_id,
+        product_name: "",
+        price: 0,
+        quantity: cartItem.quantity
+        }))
+      };
+      try {
+        await orderService.create(orderPayload);
+        navigate("/orders");
+      } catch (error) {
+        console.log(error.response?.data || error);
+        alert("Failed to create order");
+      }
+    };
 
   const handleDelete = async (id) => {
     try {
@@ -58,6 +82,9 @@ function CartItem() {
     return <p>Loading...</p>
   }
 
+
+    const totalPrice = cartitems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+
   return (
   <div>
     
@@ -66,6 +93,8 @@ function CartItem() {
     {cartitems.map(item => (
       <div key={item.id}>
         <h2>Product ID: {item.product_id}</h2>
+        <h2>Product: {item.product_name}</h2>
+        <h3>Price: ${item.price.toFixed(2)}</h3> 
         <h3>Quantity: {item.quantity}</h3>
         <button onClick={() => handleDelete(item.id)}>Delete</button>
 
@@ -94,13 +123,13 @@ function CartItem() {
       >
         Update Quantity
       </button>
-
-            <div>
-              <button>Add Order</button>
-            </div>
       </div>
     ))}
-    
+
+    <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
+            <div>
+              <button onClick={handleAddOrder}>Add Order</button>
+            </div>
   </div>
 )
 
