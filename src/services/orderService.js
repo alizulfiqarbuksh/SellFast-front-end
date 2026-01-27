@@ -29,18 +29,20 @@ const create = async (orderData) => {
 const getOne = async (id) => {
   try {
     const token = localStorage.getItem("token");
+    if (!token) throw new Error("User is not logged in");
+
     const response = await axios.get(`${BASE_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error("Failed to fetch order:", error.response?.data || error.message);
     throw error;
   }
 };
-
 
 export{
   show,
