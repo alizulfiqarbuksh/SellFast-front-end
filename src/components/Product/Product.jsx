@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import * as productService from '../../services/productService'
 import { useNavigate } from 'react-router'
+import * as cartitemService from '../../services/cartitemService'
 
 function Product({user}) {
 
   const [products, setProducts] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [cartItems, setCartItems] = useState([])
 
   const navigate = useNavigate()
 
@@ -26,9 +28,44 @@ function Product({user}) {
 
   }, [])
 
+  // Fetch user's cart items
+  useEffect(() => {
+    const getCartItems = async () => {
+      if (!user) return
+      try {
+        const items = await cartitemService.getCartItems(user.cartId)
+        setCartItems(items)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getCartItems()
+  }, [user])
+
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+
+  // Check if a product is already in cart
+  const isInCart = (productId) => {
+    return cartItems.some(item => item.product_id === productId)
+  }
+
+  const handleAddToCart = async (productId) => {
+    if (!user) {
+      alert('You must be signed in to add items to cart')
+      return
+    }
+
+    try {
+      const newItem = await cartitemService.createCartItem(user.cartId, { product_id: productId, quantity: 1 })
+      // Update local state so the UI updates immediately
+      setCartItems(prev => [...prev, newItem])
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div>
@@ -46,6 +83,16 @@ function Product({user}) {
               <h4>Stock: {product.stock}</h4>
               {product.is_available ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button> : "Not Available"}
               {user.is_admin && !product.is_available ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button> : ""}
+
+              {product.is_available && !user?.is_admin && (
+              <button
+                onClick={() => handleAddToCart(product.id)}
+                disabled={isInCart(product.id)}
+                style={{ marginLeft: '1rem' }}
+              >
+                {isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
+              </button>
+            )}
             </div>
           )
         }
