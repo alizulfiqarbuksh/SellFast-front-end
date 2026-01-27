@@ -22,8 +22,12 @@ const NavBar = () => {
           <li><Link to='/'>Dashboard</Link></li>
           <li><Link to='/' onClick={handleSignOut}>Sign Out</Link></li>
           <li><Link to='/products'>Products</Link></li>
+          <li><Link to='/services'>Services</Link></li>
           {user.is_admin && (
-            <li><Link to='/products/create'>Add new product</Link></li>
+            <div>
+              <li><Link to='/products/create'>Add new product</Link></li>
+             <li><Link to='/services/create'>Add new service</Link></li>
+            </div>
           )}
           <li><Link to={`/cart-items/${user.cartId}`}>Cart</Link></li>
           <li><Link to={'/orders'}>{user.is_admin ? "Orders" : "My Orders"}</Link></li>
