@@ -10,6 +10,7 @@ import Product from './components/Product/Product';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import ProductForm from './components/CreateProduct/ProductForm';
 import CartItem from './components/CartItem/CartItem';
+import ProtectedAdminRoute from '../utils/ProtectedAdminRoute';
 
 import { UserContext } from './contexts/UserContext';
 
@@ -28,8 +29,21 @@ const App = () => {
         <Route path='/sign-in' element={<SignInForm />} />
         <Route path='/products' element={<Product />} />
         <Route path='/products/:id' element={<ProductDetails user={user} />} />
-        <Route path='/products/create' element={<ProductForm user={user}/>} />
-        <Route path='/products/:id/update' element={<ProductForm user={user}/>} />
+        
+        <Route path='/products/create' element={
+          <ProtectedAdminRoute user={user}>
+
+          <ProductForm user={user}/>
+
+          </ProtectedAdminRoute>
+        } 
+        />
+        
+        <Route path='/products/:id/update' element={<ProtectedAdminRoute user={user}>
+          <ProductForm user={user}/></ProtectedAdminRoute>
+        } 
+        />
+
         <Route path='/cart-items/:id' element={<CartItem/>}/>
         <Route path='cart-items/:id/update' element={<CartItem/>}/>
       </Routes>
