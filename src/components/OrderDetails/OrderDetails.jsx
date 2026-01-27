@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import React, { useEffect, useState, useContext } from 'react'
+import { useParams, useNavigate } from 'react-router';
 import * as orderService from '../../services/orderService'
 
-function OrderDetails() {
+function OrderDetails({user}) {
   const { id } = useParams()
   const [order, setOrder] = useState(null)
+  const navigate = useNavigate() 
 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
         const data = await orderService.getOne(id)
+        if (!user.is_admin && data.user_id !== user.id) {
+          navigate('/orders')
+          console.log("You don't have permission to view this order")
+          return
+        }
+
         setOrder(data)
       } catch (error) {
         console.log(error)
