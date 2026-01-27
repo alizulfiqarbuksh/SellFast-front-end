@@ -26,6 +26,7 @@ const NavBar = () => {
             <li><Link to='/products/create'>Add new product</Link></li>
           )}
           <li><Link to={`/cart-items/${user.cartId}`}>Cart</Link></li>
+          <li><Link to={'/orders'}>{user.is_admin ? "Orders" : "My Orders"}</Link></li>
         </ul>
       ) : (
         <ul>
