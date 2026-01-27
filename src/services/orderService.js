@@ -44,8 +44,26 @@ const getOne = async (id) => {
   }
 };
 
+  const update = async (id, statusData) => {
+    try {
+      const token = localStorage.getItem("token")
+      
+      const response = await axios.put(`${BASE_URL}/${id}`, statusData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      return response.data
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
 export{
   show,
   create,
-  getOne
+  getOne,
+  update
 }
