@@ -14,6 +14,7 @@ import Order from './components/Order/Order';
 import OrderDetails from './components/OrderDetails/OrderDetails';
 
 import ProtectedAdminRoute from '../utils/ProtectedAdminRoute';
+import ProtectedOrdersRoute from '../utils/ProtectedOrdersRoute';
 
 import { UserContext } from './contexts/UserContext';
 
@@ -43,6 +44,14 @@ const App = () => {
         />
         <Route path='/products/:id/update' element={<ProtectedAdminRoute user={user}>
           <ProductForm user={user}/></ProtectedAdminRoute>
+        } 
+        />
+        <Route path="/orders" element={<ProtectedOrdersRoute user={user}>
+        <Order user={user} /></ProtectedOrdersRoute>
+        } 
+        />
+        <Route path="/orders/:id" element={<ProtectedOrdersRoute user={user}>
+        <OrderDetails user={user} /></ProtectedOrdersRoute>
         } 
         />
 
