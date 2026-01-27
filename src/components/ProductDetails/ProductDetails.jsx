@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router'
 import * as productService from '../../services/productService'
 import axios from 'axios'
 
+import StarRating from '../Reviews/StarRating'
+
 function ProductDetails({user}) {
 
   const [product, setProduct] = useState(null)
@@ -57,6 +59,7 @@ function ProductDetails({user}) {
         <h3>Name: {product.name}</h3>
         <h4>Description: {product.description}</h4>
         <p>price: {product.price}</p>
+        <StarRating rating={4.5} />
       </div>
 
       {user && user.is_admin ? 
