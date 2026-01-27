@@ -42,9 +42,22 @@ const update = async (id, cartItem) => {
   }
 }
 
+const createCartItem = async (cartId, cartItem) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.post(`${BASE_URL}/${cartId}`, cartItem, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data || error);
+  }
+};
+
 
 export{
     getCartItems,
     deleteOne,
-    update
+    update,
+    createCartItem
 }
