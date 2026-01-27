@@ -32,7 +32,7 @@ function Product({user}) {
 
   return (
     <div>
-      <h1>Product</h1>
+      <h1>Products</h1>
 
       <input type="text" placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '1rem' }} />
 

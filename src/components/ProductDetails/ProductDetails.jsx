@@ -51,7 +51,7 @@ function ProductDetails({user}) {
 
   return (
     <div>
-      <h1>ProductDetails</h1>
+      <h1>Product Details</h1>
       <div>
         {product.image && <img src={product.image} alt="Uploaded preview" style={{ width: '300px' }} />}
         <h3>Name: {product.name}</h3>
