@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router';
 
 import { UserContext } from '../../contexts/UserContext';
+import styles from "../NavBar/Navbar.module.css";
 
 const NavBar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -15,24 +16,65 @@ const NavBar = () => {
   // {username, sub} if logged in or null if not, and shows
   // set of the correct set of links
   return (
-    <nav>
+    <nav className={styles.nav}>
       {user ? (
-        <ul>
-          <li>Welcome, {user.username}</li>
-          <li><Link to='/'>Dashboard</Link></li>
-          <li><Link to='/' onClick={handleSignOut}>Sign Out</Link></li>
-          <li><Link to='/products'>Products</Link></li>
+        <ul className={styles.list}>
+          <li className={styles.welcome}>
+            Welcome, {user.username}
+          </li>
+
+          <li><Link className={styles.link} to="/">Dashboard</Link></li>
+          <li>
+            <Link
+              className={styles.link}
+              to="/"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Link>
+          </li>
+
+          <li><Link className={styles.link} to="/products">Products</Link></li>
+          <li><Link className={styles.link} to="/services">Services</Link></li>
+          <li><Link className={styles.link} to="/bookings/me">My Bookings</Link></li>
+
           {user.is_admin && (
-            <li><Link to='/products/create'>Add new product</Link></li>
+            <>
+              <li>
+                <Link className={styles.link} to="/products/create">
+                  Add new product
+                </Link>
+              </li>
+              <li>
+                <Link className={styles.link} to="/services/create">
+                  Add new service
+                </Link>
+              </li>
+              <li>
+                <Link className={styles.link} to="/bookings/admin">
+                  Bookings
+                </Link>
+              </li>
+            </>
           )}
-          <li><Link to={`/cart-items/${user.cartId}`}>Cart</Link></li>
-          <li><Link to={'/orders'}>{user.is_admin ? "Orders" : "My Orders"}</Link></li>
+
+          <li>
+            <Link className={styles.link} to={`/cart-items/${user.cartId}`}>
+              Cart
+            </Link>
+          </li>
+
+          <li>
+            <Link className={styles.link} to="/orders">
+              {user.is_admin ? "Orders" : "My Orders"}
+            </Link>
+          </li>
         </ul>
       ) : (
-        <ul>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to='/sign-in'>Sign In</Link></li>
-          <li><Link to='/sign-up'>Sign Up</Link></li>
+        <ul className={styles.list}>
+          <li><Link className={styles.link} to="/">Home</Link></li>
+          <li><Link className={styles.link} to="/sign-in">Sign In</Link></li>
+          <li><Link className={styles.link} to="/sign-up">Sign Up</Link></li>
         </ul>
       )}
     </nav>
