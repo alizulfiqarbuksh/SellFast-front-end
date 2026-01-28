@@ -33,6 +33,7 @@ function Product({user}) {
   // Fetch user's cart items
   useEffect(() => {
     const getCartItems = async () => {
+      if (!user?.cartId || isNaN(user.cartId)) return;
       if (!user) return
       try {
         const items = await cartitemService.getCartItems(user.cartId)

@@ -15,18 +15,22 @@ function OrderDetails({user}) {
       try {
         const data = await orderService.getOne(id)
         if (!user.is_admin && data.user_id !== user.id) {
-          navigate('/orders')
+          navigate('/orders', { state: { error: "You don't have permission to view that order" } })
           return
         }
 
         setOrder(data)
       } catch (error) {
-        navigate('/orders');
+        if (error.response?.status === 404) {
+          navigate('/orders', { state: { error: "Order not found" } })
+        } else {
+          navigate('/orders', { state: { error: "Failed to load order" } })
+        }
       }
     }
 
     fetchOrder()
-  }, [id])
+    }, [id, user, navigate])
 
   const handleStatusUpdate = async () => {
   try {

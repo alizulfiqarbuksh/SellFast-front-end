@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import * as orderService from '../../services/orderService'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation  } from 'react-router'
 
 import styles from '../Order/Order.module.css';
 
 function Order() {
+  const location = useLocation()
+  const [orderError, setOrderError] = useState(location.state?.error || "")
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+  if (orderError) {
+    const timer = setTimeout(() => setOrderError(""), 4000)
+    return () => clearTimeout(timer)
+  }
+}, [orderError])
 
   useEffect(() => {
     const getOrders = async () => {
@@ -41,6 +50,18 @@ function Order() {
   return (
     <div className={styles.container}>
       <h1>Orders</h1>
+      {orderError && (
+        <div style={{
+          background: '#ffe0e0',
+          color: '#900',
+          padding: '10px',
+          borderRadius: '6px',
+          marginBottom: '1rem',
+          border: '1px solid #ffb3b3'
+        }}>
+          {orderError}
+        </div>
+      )}
 
       <input
         type="text"
