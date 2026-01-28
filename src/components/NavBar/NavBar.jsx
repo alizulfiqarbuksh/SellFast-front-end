@@ -57,13 +57,13 @@ const NavBar = () => {
               </li>
             </>
           )}
-
+          {!user.is_admin && (
           <li>
             <Link className={styles.link} to={`/cart-items/${user.cartId}`}>
               Cart
             </Link>
           </li>
-
+          )}
           <li>
             <Link className={styles.link} to="/orders">
               {user.is_admin ? "Orders" : "My Orders"}
