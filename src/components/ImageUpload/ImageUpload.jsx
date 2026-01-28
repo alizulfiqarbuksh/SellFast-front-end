@@ -42,7 +42,7 @@ const CustomImageUpload = ({onUpload}) => {
         <h3>Uploading...</h3>
       ) : (
         <>
-          {image && <img src={image} alt="Uploaded preview" style={{ width: '300px' }} />}
+          
         </>
       )}
     </div>
