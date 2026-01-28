@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import * as serviceService from '../../services/serviceService'
 import ImageUpload from '../ImageUpload/ImageUpload'
+import styles from './ServiceForm.module.css'
 
 function ServiceForm({ user }) {
-
   const navigate = useNavigate()
   const { id } = useParams()
-
   const isEdit = Boolean(id)
 
   const [formData, setFormData] = useState({
@@ -78,35 +77,106 @@ function ServiceForm({ user }) {
   if (loading) return <p>Loading...</p>
 
   return (
-    <div>
-      <h1>{isEdit ? 'Update Service' : 'Add a Service'}</h1>
+    <main className={styles.serviceForm}>
+      <section className={styles.formWrapper}>
+        <h1>{isEdit ? 'Update Service' : 'Add a Service'}</h1>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
 
-        <label htmlFor="name">Name:</label>
-        <input onChange={handleChange} type="text" id="name" name="name" value={formData.name} required />
+          <div className={styles.field}>
+            <label htmlFor="name">Name:</label>
+            <input 
+              onChange={handleChange} 
+              type="text" 
+              id="name" 
+              name="name" 
+              value={formData.name} 
+              required 
+            />
+          </div>
 
-        <label htmlFor="description">Description:</label>
-        <input onChange={handleChange} type="text" id="description" name="description" value={formData.description} />
+          <div className={styles.field}>
+            <label htmlFor="description">Description:</label>
+            <input 
+              onChange={handleChange} 
+              type="text" 
+              id="description" 
+              name="description" 
+              value={formData.description} 
+            />
+          </div>
 
-        <label htmlFor="price">Price:</label>
-        <input onChange={handleChange} type="number" id="price" name="price" value={formData.price} required />
+          <div className={styles.field}>
+            <label htmlFor="price">Price ($):</label>
+            <input 
+              onChange={handleChange} 
+              type="number" 
+              id="price" 
+              name="price" 
+              value={formData.price} 
+              min="0"
+              step="0.01"
+              required 
+            />
+          </div>
 
-        <label htmlFor="duration_minutes">Duration (minutes):</label>
-        <input onChange={handleChange} type="number" id="duration_minutes" name="duration_minutes" value={formData.duration_minutes} required />
+          <div className={styles.field}>
+            <label htmlFor="duration_minutes">Duration (minutes):</label>
+            <input 
+              onChange={handleChange} 
+              type="number" 
+              id="duration_minutes" 
+              name="duration_minutes" 
+              value={formData.duration_minutes} 
+              min="1"
+              required 
+            />
+          </div>
 
-        <label htmlFor="is_available">Available:</label>
-        <input onChange={handleChange} type="checkbox" id="is_available" name="is_available" checked={formData.is_available}/>
+          <div className={styles.checkboxField}>
+            <input 
+              onChange={handleChange} 
+              type="checkbox" 
+              id="is_available" 
+              name="is_available" 
+              checked={formData.is_available}
+            />
+            <label htmlFor="is_available">Available</label>
+          </div>
 
-        <ImageUpload onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}/>
+          <div className={styles.imageUploadSection}>
+            <label>Service Image:</label>
+            <div className={styles.imageUploadWrapper}>
+              <div className={styles.uploadIcon}>📷</div>
+              <ImageUpload 
+                onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
+              />
+              <p className={styles.uploadText}>Upload a service image</p>
+            </div>
+          </div>
 
-        <button type="submit"> {isEdit ? 'Update Service' : 'Add Service'} </button>
+          {formData.image && (
+            <div className={styles.imagePreview}>
+              <span className={styles.imagePreviewLabel}>Preview:</span>
+              <img src={formData.image} alt="Uploaded preview" />
+            </div>
+          )}
 
-      </form>
+          <div className={styles.actions}>
+            <button type="submit">
+              {isEdit ? 'Update Service' : 'Add Service'}
+            </button>
+            <button 
+              type="button" 
+              onClick={() => navigate(isEdit ? `/services/${id}` : '/services')}
+            >
+              Cancel
+            </button>
+          </div>
 
-      {formData.image && (<img src={formData.image} alt="Uploaded preview" style={{ width: '300px', marginTop: '10px' }}/>
-      )}
-    </div>
+        </form>
+      </section>
+    </main>
   )
 }
 
