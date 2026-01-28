@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import * as serviceService from '../../services/serviceService'
+import * as bookingService from '../../services/bookingService'
 
 function ServiceDetails({user}) {
 
   const [service, setService] = useState(null)
   const {id} = useParams()
+  const [bookingDate, setBookingDate] = useState("")
   
   const navigate = useNavigate()
 
@@ -43,6 +45,21 @@ function ServiceDetails({user}) {
     }
     
   }
+
+  const handleBooking = async () => {
+    try {
+
+      await bookingService.create({
+        service_id: service.id,
+        booking_datetime: bookingDate
+      })
+
+      navigate('/bookings/me')
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
     
   if (!service) {
     return <p>Loading...</p>
@@ -58,6 +75,16 @@ function ServiceDetails({user}) {
         <p>duration: {service.duration_minutes}</p>
         <p>price: {service.price}</p>
       </div>
+
+      {user && service.is_available ?
+       <div>
+        <label>Select date & time:</label>
+        <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
+
+        <button onClick={handleBooking} disabled={!bookingDate}>Book</button>   
+       </div> 
+      :
+       ""}
 
       {user && user.is_admin ? 
       <div>
