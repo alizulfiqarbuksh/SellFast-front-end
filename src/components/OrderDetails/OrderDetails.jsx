@@ -5,6 +5,7 @@ import * as orderService from '../../services/orderService'
 function OrderDetails({user}) {
   const { id } = useParams()
   const [order, setOrder] = useState(null)
+  const [newStatus, setNewStatus] = useState("")
   const navigate = useNavigate() 
 
   useEffect(() => {
@@ -13,18 +14,27 @@ function OrderDetails({user}) {
         const data = await orderService.getOne(id)
         if (!user.is_admin && data.user_id !== user.id) {
           navigate('/orders')
-          console.log("You don't have permission to view this order")
           return
         }
 
         setOrder(data)
       } catch (error) {
-        console.log(error)
+        navigate('/orders');
       }
     }
 
     fetchOrder()
   }, [id])
+
+  const handleStatusUpdate = async () => {
+  try {
+    const updated = await orderService.update(order.id, { status: newStatus })
+    setOrder(updated)
+  } catch (error) {
+    console.error("Failed to update status", error)
+  }
+}
+
 
   if (!order) return <p>Loading...</p>
 
@@ -43,6 +53,23 @@ function OrderDetails({user}) {
           <p>Subtotal: {(item.price * item.quantity).toFixed(2)} BHD</p>
         </div>
       ))}
+      {user.is_admin && (
+  <div>
+    <h3>Update Order Status</h3>
+    <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
+      <option value="">Select status</option>
+      <option value="pending">Pending</option>
+      <option value="shipped">Shipped</option>
+      <option value="delivered">Delivered</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+
+    <button onClick={handleStatusUpdate} disabled={!newStatus}>
+      Update Status
+    </button>
+  </div>
+)}
+
     </div>
   )
 }
