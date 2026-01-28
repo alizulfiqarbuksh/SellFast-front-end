@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import * as cartitemService from '../../services/cartitemService'
 import * as orderService from '../../services/orderService'
 
+import styles from './CartItem.module.css';
 
 function CartItem() {
 
@@ -86,53 +87,57 @@ function CartItem() {
     const totalPrice = cartitems.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
   return (
-  <div>
-    
-      <h1>Cart Items</h1>
+    <main className={styles.cart}>
+      <section className={styles.cartWrapper}>
+        <h1>Cart Items</h1>
 
-    {cartitems.map(item => (
-      <div key={item.id}>
-        <h2>Product ID: {item.product_id}</h2>
-        <h2>Product: {item.product_name}</h2>
-        <h3>Price: ${item.price.toFixed(2)}</h3> 
-        <h3>Quantity: {item.quantity}</h3>
-        <button onClick={() => handleDelete(item.id)}>Delete</button>
+        {cartitems.map(item => (
+          <div key={item.id} className={styles.cartItem}>
+            <h2>{item.product_name}</h2>
+            <p>Product ID: {item.product_id}</p>
+            <p>Price: ${item.price.toFixed(2)}</p>
+            <p>Quantity: {item.quantity}</p>
 
-        <div>
-          <label htmlFor='quantity'>Quantity:</label>
-          <input
-            type="number"
-            min="1"
-            value={item.quantity}
-            onChange={(e) =>
-              setCardItem(prev =>
-                prev.map(ci =>
-                  ci.id === item.id
-                    ? { ...ci, quantity: Number(e.target.value) }
-                    : ci
-                )
-              )
-            }
-/>
-
-        </div>
-        
-        <button
-        type="button"
-        onClick={() => handleSubmit(item.id, item.quantity)}
-      >
-        Update Quantity
-      </button>
-      </div>
-    ))}
-
-    <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
-            <div>
-              <button onClick={handleAddOrder}>Add Order</button>
+            <div className={styles.quantityRow}>
+              <label>Quantity:</label>
+              <input
+                type="number"
+                min="1"
+                value={item.quantity}
+                onChange={(e) =>
+                  setCardItem(prev =>
+                    prev.map(ci =>
+                      ci.id === item.id
+                        ? { ...ci, quantity: Number(e.target.value) }
+                        : ci
+                    )
+                  )
+                }
+              />
+              <button
+                type="button"
+                onClick={() => handleSubmit(item.id, item.quantity)}
+              >
+                Update
+              </button>
             </div>
-  </div>
-)
 
+            <button
+              className={styles.deleteBtn}
+              onClick={() => handleDelete(item.id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+
+        <div className={styles.summary}>
+          <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
+          <button onClick={handleAddOrder}>Add Order</button>
+        </div>
+      </section>
+    </main>
+  );
 }
 
 export default CartItem
