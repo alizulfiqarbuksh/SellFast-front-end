@@ -12,26 +12,37 @@ function OrderDetails({user}) {
   const navigate = useNavigate() 
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      try {
-        setIsLoading(true)
-        const data = await orderService.getOne(id)
-        if (!user.is_admin && data.user_id !== user.id) {
-          navigate('/orders', { state: { error: "You don't have permission to view that order" } })
-          return
-        }
-        setOrder(data)
-      } catch (error) {
-        if (error.response?.status === 404) {
-          navigate('/orders', { state: { error: "Order not found" } })
-        } else {
-          navigate('/orders', { state: { error: "Failed to load order" } })
-        }
-      }
-    }
+  if (!user) return; // 🔴 wait until user is loaded
 
-    fetchOrder()
-    }, [id, user, navigate])
+  const fetchOrder = async () => {
+    try {
+      setIsLoading(true)
+
+      const data = await orderService.getOne(id)
+
+      // permission check AFTER user exists
+      if (!user.is_admin && data.user_id !== user.id) {
+        navigate('/orders', {
+          state: { error: "You don't have permission to view that order" }
+        })
+        return
+      }
+
+      setOrder(data)
+    } catch (error) {
+      if (error.response?.status === 404) {
+        navigate('/orders', { state: { error: "Order not found" } })
+      } else {
+        navigate('/orders', { state: { error: "Failed to load order" } })
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  fetchOrder()
+}, [id, user, navigate])
+
 
   const handleStatusUpdate = async () => {
     try {

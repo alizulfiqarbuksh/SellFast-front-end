@@ -157,7 +157,7 @@ function ProductDetails({user}) {
           </div>
 
           {/* Add to Cart Button */}
-          {product.is_available && !user?.is_admin && (
+          {product.is_available && !user?.is_admin && user && (
             <div className={styles.cartSection}>
               <button
                 className={`${styles.cartButton} ${

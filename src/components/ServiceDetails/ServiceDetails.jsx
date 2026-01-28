@@ -102,19 +102,6 @@ function ServiceDetails({user}) {
         </button>
         <h1 className={styles.title}>{service.name}</h1>
       </div>
-      
-      {bookingError && (
-     <div style={{
-       background: '#ffe0e0',
-        color: '#900',
-        padding: '10px',
-        borderRadius: '6px',
-        marginBottom: '1rem',
-        border: '1px solid #ffb3b3'
-     }}>
-        {bookingError}
-     </div>
-    )}
 
       <div className={styles.serviceContainer}>
         {/* Service Image */}

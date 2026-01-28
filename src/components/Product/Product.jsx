@@ -141,7 +141,7 @@ function Product({user}) {
                   View Details
                 </button>
 
-                {product.is_available && !user?.is_admin && (
+                {product.is_available && !user?.is_admin && user && (
                   <button
                     className={`${styles.cartButton} ${
                       isInCart(product.id) ? styles.inCart : 
