@@ -61,7 +61,7 @@ function CartItem() {
         setCardItem([]);
         navigate("/orders");
       } catch (error) {
-        console.log(error.response?.data || error);
+        const message = error.response?.data?.detail
 
        // Show backend stock message in popup
         if (message) {
