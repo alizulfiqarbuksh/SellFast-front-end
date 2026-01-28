@@ -1,0 +1,74 @@
+/* Page container */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Main flex container for image + info */
+.detailWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+/* Service image */
+.imageWrapper {
+  flex: 0 0 300px; /* Fixed width for image */
+}
+
+.serviceImage {
+  width: 100%;
+  max-height: 350px; /* Limit height */
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Info section */
+.infoWrapper {
+  flex: 1; /* Takes remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Booking container */
+.bookingWrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Admin buttons container */
+.adminActions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Scoped buttons ONLY for this page */
+.detailButton {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.detailButton:hover {
+  background-color: #444;
+}
+
+/* Booking input */
+.bookingInput {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}

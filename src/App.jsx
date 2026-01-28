@@ -8,12 +8,18 @@ import Landing from './components/Landing/Landing';
 import Dashboard from './components/Dashboard/Dashboard';
 import Product from './components/Product/Product';
 import ProductDetails from './components/ProductDetails/ProductDetails';
-import ProductForm from './components/CreateProduct/ProductForm';
+import ProductForm from './components/ProductForm/ProductForm';
 import CartItem from './components/CartItem/CartItem';
 import Order from './components/Order/Order';
 import OrderDetails from './components/OrderDetails/OrderDetails';
+import Service from './components/Service/Service';
+import ServiceDetails from './components/ServiceDetails/ServiceDetails';
+import ServiceForm from './components/ServiceForm/ServiceForm';
+import MyBooking from './components/MyBooking/MyBooking';
+import Booking from './components/Booking/Booking';
 
 import ProtectedAdminRoute from '../utils/ProtectedAdminRoute';
+import ProtectedOrdersRoute from '../utils/ProtectedOrdersRoute';
 
 import { UserContext } from './contexts/UserContext';
 
@@ -32,6 +38,9 @@ const App = () => {
         <Route path='/sign-in' element={<SignInForm />} />
         <Route path='/products' element={<Product user={user} />} />
         <Route path='/products/:id' element={<ProductDetails user={user} />} />
+        <Route path='/services' element={<Service user={user} />} />
+        <Route path='/services/:id' element={<ServiceDetails user={user} />} />
+        <Route path='/bookings/me' element={<MyBooking />} />
         
         <Route path='/products/create' element={
           <ProtectedAdminRoute user={user}>
@@ -41,9 +50,34 @@ const App = () => {
           </ProtectedAdminRoute>
         } 
         />
+
+        <Route path='/services/create' element={
+          <ProtectedAdminRoute user={user}>
+
+          <ServiceForm user={user}/>
+
+          </ProtectedAdminRoute>
+        } 
+        />
         
+        <Route path='/bookings/admin' element={<ProtectedAdminRoute user={user}>
+          <Booking /></ProtectedAdminRoute>
+        } 
+        />
         <Route path='/products/:id/update' element={<ProtectedAdminRoute user={user}>
           <ProductForm user={user}/></ProtectedAdminRoute>
+        } 
+        />
+        <Route path='/services/:id/update' element={<ProtectedAdminRoute user={user}>
+          <ServiceForm user={user}/></ProtectedAdminRoute>
+        } 
+        />
+        <Route path="/orders" element={<ProtectedOrdersRoute user={user}>
+        <Order user={user} /></ProtectedOrdersRoute>
+        } 
+        />
+        <Route path="/orders/:id" element={<ProtectedOrdersRoute user={user}>
+        <OrderDetails user={user} /></ProtectedOrdersRoute>
         } 
         />
 

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import * as orderService from '../../services/orderService'
 import { useNavigate } from 'react-router'
 
+import styles from '../Order/Order.module.css';
+
 function Order() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
 
   const navigate = useNavigate()
@@ -25,20 +28,42 @@ function Order() {
     getOrders()
   }, [])
 
+  const filteredOrders = orders.filter(order =>
+    order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.id.toString().includes(searchTerm) ||
+    order.total_price.toString().includes(searchTerm)
+  )
+
+
   if (loading) return <p>Loading orders...</p>
   if (error) return <p>{error}</p>
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Orders</h1>
-      {orders.length === 0 ? (
+
+      <input
+        type="text"
+        placeholder="Search order by ID, status, or price..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
+
+      {filteredOrders.length === 0 ? (
         <p>No orders found</p>
       ) : (
-        orders.map(order => (
-          <div key={order.id}>
+        filteredOrders.map(order => (
+          <div key={order.id} className={styles.orderCard}>
+            <h3>Order #{order.id}</h3>
             <h3>Status: {order.status}</h3>
             <h4>Total: {order.total_price.toFixed(2)} BHD</h4>
-            <button onClick={() => navigate(`/orders/${order.id}`)}>Details</button>
+            <button
+              className={styles.detailsButton}
+              onClick={() => navigate(`/orders/${order.id}`)}
+            >
+              Details
+            </button>
           </div>
         ))
       )}
