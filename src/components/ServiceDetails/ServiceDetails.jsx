@@ -9,6 +9,7 @@ function ServiceDetails({user}) {
   const [service, setService] = useState(null)
   const {id} = useParams()
   const [bookingDate, setBookingDate] = useState("")
+  const [bookingError, setBookingError] = useState("")
   
   const navigate = useNavigate()
 
@@ -49,6 +50,8 @@ function ServiceDetails({user}) {
   const handleBooking = async () => {
     try {
 
+      setBookingError("")
+
       await bookingService.create({
         service_id: service.id,
         booking_datetime: bookingDate
@@ -58,6 +61,11 @@ function ServiceDetails({user}) {
       
     } catch (error) {
       console.log(error)
+      if (error.response && error.response.data?.detail) {
+        setBookingError(error.response.data.detail)
+      } else {
+        setBookingError("Something went wrong. Please try again.")
+      }
     }
   }
     
@@ -81,7 +89,8 @@ function ServiceDetails({user}) {
         <label>Select date & time:</label>
         <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
 
-        <button onClick={handleBooking} disabled={!bookingDate}>Book</button>   
+        <button onClick={handleBooking} disabled={!bookingDate}>Book</button> 
+        {bookingError && (<p> {bookingError} </p>)}  
        </div> 
       :
        ""}
