@@ -7,15 +7,15 @@ import * as bookingService from '../../services/bookingService'
 import styles from '../ServiceDetails/ServiceDetails.module.css';
 
 function ServiceDetails({user}) {
-
   const [service, setService] = useState(null)
   const {id} = useParams()
   const [bookingDate, setBookingDate] = useState("")
   const [bookingError, setBookingError] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
   
   const navigate = useNavigate()
 
-      useEffect(() => {
+    useEffect(() => {
            if (bookingError) {
               const timer = setTimeout(() => setBookingError(''), 4000)
              return () => clearTimeout(timer)
@@ -23,51 +23,40 @@ function ServiceDetails({user}) {
          }, [bookingError])
 
     useEffect(() => {
-    
-      const serviceDetails = async (id) => {
-        try {
-  
-          const foundService = await serviceService.details(id)
-          setService(foundService)
-          
-        } catch (error) {
-          console.log(error)
-        }
+    const serviceDetails = async (id) => {
+      try {
+        setIsLoading(true)
+        const foundService = await serviceService.details(id)
+        setService(foundService)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
       }
-  
-      if (id) serviceDetails(id)
-  
-    }, [id])
+    }
+
+    if (id) serviceDetails(id)
+  }, [id])
 
   const handleDelete = async (id) => {
-    
     try {
-    
       const deletedService = await serviceService.deleteOne(id)
-    
       if(deletedService) {
-         navigate('/services')
+        navigate('/services')
       }
-    
-          
     } catch (error) {
       console.log(error)
     }
-    
   }
 
   const handleBooking = async () => {
     try {
-
       setBookingError("")
-
       await bookingService.create({
         service_id: service.id,
         booking_datetime: bookingDate
       })
-
       navigate('/bookings/me')
-      
     } catch (error) {
       console.log(error)
       if (error.response && error.response.data?.detail) {
@@ -78,79 +67,146 @@ function ServiceDetails({user}) {
     }
   }
     
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+        <p>Loading service details...</p>
+      </div>
+    )
+  }
+
   if (!service) {
-    return <p>Loading...</p>
+    return (
+      <div className={styles.errorContainer}>
+        <h2>Service Not Found</h2>
+        <p>The service you're looking for doesn't exist or has been removed.</p>
+        <button 
+          className={styles.backButton}
+          onClick={() => navigate('/services')}
+        >
+          Back to Services
+        </button>
+      </div>
+    )
   }
 
   return (
     <div className={styles.container}>
-      <h1>Service Details</h1>
-      
-      {bookingError && (
-     <div style={{
-       background: '#ffe0e0',
-        color: '#900',
-        padding: '10px',
-        borderRadius: '6px',
-        marginBottom: '1rem',
-        border: '1px solid #ffb3b3'
-     }}>
-        {bookingError}
-     </div>
-    )}
+      <div className={styles.header}>
+        <button 
+          className={styles.backButton}
+          onClick={() => navigate('/services')}
+        >
+          ← Back to Services
+        </button>
+        <h1 className={styles.title}>{service.name}</h1>
+      </div>
 
-      <div className={styles.detailWrapper}>
-        {service.image && (
-          <div className={styles.imageWrapper}>
+      <div className={styles.serviceContainer}>
+        {/* Service Image */}
+        <div className={styles.imageSection}>
+          {service.image ? (
             <img
               src={service.image}
-              alt="Uploaded preview"
+              alt={service.name}
               className={styles.serviceImage}
             />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              No Image Available
+            </div>
+          )}
+          
+          {!service.is_available && (
+            <div className={styles.unavailableBanner}>
+              Currently Unavailable
+            </div>
+          )}
+        </div>
+
+        {/* Service Info */}
+        <div className={styles.infoSection}>
+          <div className={styles.serviceHeader}>
+            <h2 className={styles.serviceName}>{service.name}</h2>
+            <div className={styles.priceTag}>${service.price}</div>
           </div>
-        )}
 
-        <div className={styles.infoWrapper}>
-          <h3>Name: {service.name}</h3>
-          <h4>Description: {service.description}</h4>
-          <p>Duration: {service.duration_minutes} minutes</p>
-          <p>Price: ${service.price}</p>
+          <div className={styles.statusInfo}>
+            <div className={styles.statusItem}>
+              <span className={styles.statusLabel}>Status:</span>
+              <span className={`${styles.statusValue} ${service.is_available ? styles.available : styles.unavailable}`}>
+                {service.is_available ? 'Available' : 'Unavailable'}
+              </span>
+            </div>
+            <div className={styles.statusItem}>
+              <span className={styles.statusLabel}>Duration:</span>
+              <span className={styles.durationValue}>{service.duration_minutes} minutes</span>
+            </div>
+          </div>
 
+          <div className={styles.descriptionSection}>
+            <h3 className={styles.sectionTitle}>Description</h3>
+            <p className={styles.description}>{service.description || 'No description available.'}</p>
+          </div>
+
+          {/* Booking Section */}
           {user && service.is_available && (
-            <div className={styles.bookingWrapper}>
-              <label>Select date & time:</label>
-              <input
-                type="datetime-local"
-                min={new Date().toISOString().slice(0, 16)}
-                value={bookingDate}
-                onChange={(e) => setBookingDate(e.target.value)}
-                className={styles.bookingInput}
-              />
-              <button
-                onClick={handleBooking}
-                disabled={!bookingDate}
-                className={styles.detailButton}
-              >
-                Book
-              </button>
-
+            <div className={styles.bookingSection}>
+              <h3 className={styles.sectionTitle}>Book This Service</h3>
+              
+              <div className={styles.bookingForm}>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>
+                    Select Date & Time
+                  </label>
+                  <input
+                    type="datetime-local"
+                    min={new Date().toISOString().slice(0, 16)}
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                    className={styles.bookingInput}
+                  />
+                  <small className={styles.formHint}>
+                    Choose a future date and time for your appointment
+                  </small>
+                </div>
+                
+                <button
+                  onClick={handleBooking}
+                  disabled={!bookingDate}
+                  className={`${styles.bookButton} ${!bookingDate ? styles.disabled : ''}`}
+                >
+                  Book Appointment
+                </button>
+                
+                {bookingError && (
+                  <div className={styles.errorMessage}>
+                    ⚠ {bookingError}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
+          {/* Admin Actions */}
           {user && user.is_admin && (
-            <div className={styles.adminActions}>
-              <button
-                className={styles.detailButton}
-                onClick={() => navigate(`/services/${service.id}/update`)}
-              >
-                Update
-              </button>
-              <button
-                className={styles.detailButton}
-                onClick={() => handleDelete(service.id)}
-              >
-                Delete
-              </button>
+            <div className={styles.adminSection}>
+              <h3 className={styles.sectionTitle}>Admin Actions</h3>
+              <div className={styles.adminButtons}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => navigate(`/services/${service.id}/update`)}
+                >
+                  Edit Service
+                </button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDelete(service.id)}
+                >
+                  Delete Service
+                </button>
+              </div>
             </div>
           )}
         </div>
