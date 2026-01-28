@@ -163,7 +163,7 @@ function CartItem() {
 
         <div className={styles.summary}>
           <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
-          <button onClick={handleAddOrder}>Add Order</button>
+          <button disabled={cartitems.length === 0} onClick={handleAddOrder}>Add Order</button>
         </div>
       </section>
     </main>
