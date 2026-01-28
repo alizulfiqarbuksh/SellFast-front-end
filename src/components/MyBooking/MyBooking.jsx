@@ -31,7 +31,7 @@ function MyBooking() {
         <div key={booking.id}>
           <h3>Service: {booking.service.name}</h3>
           <h4>Price: {booking.service.price}</h4>
-          <p>Date: {booking.booking_datetime}</p>
+          <p>Date: {new Date(booking.booking_datetime).toLocaleString()}</p>
           <p>Status: {booking.status}</p>
         </div>
       )}

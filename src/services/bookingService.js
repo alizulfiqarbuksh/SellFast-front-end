@@ -11,6 +11,7 @@ const create = async (bookingData) => {
 
   } catch (error) {
     console.log(error)
+    throw error
   }
 }
 
