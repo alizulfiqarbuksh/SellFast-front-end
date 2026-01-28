@@ -6,6 +6,7 @@ import * as cartitemService from '../../services/cartitemService'
 import axios from 'axios'
 
 import styles from '../ProductDetails/ProductDetails.module.css';
+import ReviewSection from '../Review/ReviewSection'
 
 function ProductDetails({user}) {
 
@@ -137,6 +138,14 @@ function ProductDetails({user}) {
       </div>
 
     </div>
+   
+      
+    
+     
+       {/* ========== REVIEWS (All logic handled by ReviewSection) ========== */}
+         <ReviewSection productId={id} user={user} />
+
+    
   </div>
 )
 
