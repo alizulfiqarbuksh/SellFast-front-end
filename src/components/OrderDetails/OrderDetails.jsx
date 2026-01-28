@@ -10,6 +10,8 @@ function OrderDetails({user}) {
   const [order, setOrder] = useState(null)
   const [newStatus, setNewStatus] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
+  const [permissionDenied, setPermissionDenied] = useState(false)
   const navigate = useNavigate() 
 
   useEffect(() => {
@@ -23,18 +25,18 @@ function OrderDetails({user}) {
 
       // permission check AFTER user exists
       if (!user.is_admin && data.user_id !== user.id) {
-        navigate('/orders', {
-          state: { error: "You don't have permission to view that order" }
-        })
-        return
+          setPermissionDenied(true)
+          setOrder(null)
+          return
       }
 
       setOrder(data)
     } catch (error) {
-      if (error.response?.status === 404) {
-        navigate('/orders', { state: { error: "Order not found" } })
-      } else {
-        navigate('/orders', { state: { error: "Failed to load order" } })
+        if (error.response?.status === 404) {
+          setNotFound(true)
+        } else {
+          toast.error("Failed to load order")
+          navigate('/orders')
       }
     } finally {
       setIsLoading(false)
@@ -46,6 +48,8 @@ function OrderDetails({user}) {
 
 
   const handleStatusUpdate = async () => {
+    if (!newStatus || newStatus === order.status) return
+    
     try {
       const updated = await orderService.update(order.id, { status: newStatus })
       setOrder(updated)
@@ -53,6 +57,7 @@ function OrderDetails({user}) {
       setNewStatus("")
     } catch (error) {
       console.error("Failed to update status", error)
+      toast.error("Failed to update order status")
     }
   }
 
@@ -82,12 +87,12 @@ function OrderDetails({user}) {
     )
   }
 
-  if (!order) {
+  if (permissionDenied) {
     return (
       <div className={styles.errorContainer}>
-        <h2>Order Not Found</h2>
-        <p>The order you're looking for doesn't exist or you don't have access to it.</p>
-        <button 
+        <h2>Access Denied</h2>
+        <p>You don’t have permission to view this order.</p>
+        <button
           className={styles.backButton}
           onClick={() => navigate('/orders')}
         >
@@ -96,6 +101,23 @@ function OrderDetails({user}) {
       </div>
     )
   }
+
+  if (notFound) {
+    return (
+      <div className={styles.errorContainer}>
+        <h2>Order Not Found</h2>
+        <p>The order you're looking for doesn't exist.</p>
+        <button
+          className={styles.backButton}
+          onClick={() => navigate('/orders')}
+        >
+          Back to Orders
+        </button>
+      </div>
+    )
+  }
+
+  if (!order) return null
 
   return (
     <div className={styles.container}>
