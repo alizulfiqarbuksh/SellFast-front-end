@@ -15,6 +15,13 @@ function ServiceDetails({user}) {
   
   const navigate = useNavigate()
 
+      useEffect(() => {
+           if (bookingError) {
+              const timer = setTimeout(() => setBookingError(''), 4000)
+             return () => clearTimeout(timer)
+          }
+         }, [bookingError])
+
     useEffect(() => {
     
       const serviceDetails = async (id) => {
@@ -78,6 +85,19 @@ function ServiceDetails({user}) {
   return (
     <div className={styles.container}>
       <h1>Service Details</h1>
+      
+      {bookingError && (
+     <div style={{
+       background: '#ffe0e0',
+        color: '#900',
+        padding: '10px',
+        borderRadius: '6px',
+        marginBottom: '1rem',
+        border: '1px solid #ffb3b3'
+     }}>
+        {bookingError}
+     </div>
+    )}
 
       <div className={styles.detailWrapper}>
         {service.image && (
@@ -113,7 +133,7 @@ function ServiceDetails({user}) {
               >
                 Book
               </button>
-              {bookingError && (<p> {bookingError} </p>)}  
+
             </div>
           )}
 
