@@ -14,13 +14,12 @@ function OrderDetails({user}) {
         const data = await orderService.getOne(id)
         if (!user.is_admin && data.user_id !== user.id) {
           navigate('/orders')
-          console.log("You don't have permission to view this order")
           return
         }
 
         setOrder(data)
       } catch (error) {
-        console.log(error)
+        navigate('/orders');
       }
     }
 
@@ -32,7 +31,7 @@ function OrderDetails({user}) {
     const updated = await orderService.update(order.id, { status: newStatus })
     setOrder(updated)
   } catch (error) {
-    console.log("Failed to update status", error)
+    console.error("Failed to update status", error)
   }
 }
 
