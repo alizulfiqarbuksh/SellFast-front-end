@@ -90,8 +90,7 @@ function ServiceDetails({user}) {
         <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
 
         <button onClick={handleBooking} disabled={!bookingDate}>Book</button> 
-        {bookingError && (<p> {bookingError} </p>
-)}  
+        {bookingError && (<p> {bookingError} </p>)}  
        </div> 
       :
        ""}
