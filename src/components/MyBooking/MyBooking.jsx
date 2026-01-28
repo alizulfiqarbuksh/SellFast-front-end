@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router'
 import * as bookingService from '../../services/bookingService'
 import axios from 'axios'
 
+import styles from '../MyBooking/MyBooking.module.css';
+
 function MyBooking() {
 
   const [myBookings, setMyBookings] = useState([])
@@ -24,18 +26,21 @@ function MyBooking() {
   },[])
 
   return (
-    <div>
-      <h1>MyBooking</h1>
+    <div className={styles.container}>
+      <h1>My Bookings</h1>
 
-      {myBookings.map((booking) =>
-        <div key={booking.id}>
-          <h3>Service: {booking.service.name}</h3>
-          <h4>Price: {booking.service.price}</h4>
-          <p>Date: {new Date(booking.booking_datetime).toLocaleString()}</p>
-          <p>Status: {booking.status}</p>
+      {myBookings.length === 0 && <p>No bookings found.</p>}
+
+      {myBookings.map((booking) => (
+        <div key={booking.id} className={styles.bookingCard}>
+          <div className={styles.bookingInfo}>
+            <h3>Service: {booking.service.name}</h3>
+            <p>Price: {booking.service.price} BHD</p>
+            <p>Date: {new Date(booking.booking_datetime).toLocaleString()}</p>
+            <p>Status: <strong>{booking.status}</strong></p>
+          </div>
         </div>
-      )}
-
+      ))}
     </div>
   )
 }

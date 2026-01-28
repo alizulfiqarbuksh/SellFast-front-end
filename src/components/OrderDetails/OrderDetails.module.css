@@ -1,0 +1,55 @@
+/* Page container */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Items container */
+.itemsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Individual item card */
+.itemCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+/* Admin status update container */
+.adminActions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Scoped buttons for this page only */
+.detailButton {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: #1a1a1a;
+  color: #fff;
+  max-width: 150px;
+}
+
+.detailButton:hover {
+  background-color: #444;
+}
+
+/* Status dropdown */
+.statusSelect {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  max-width: 200px;
+}

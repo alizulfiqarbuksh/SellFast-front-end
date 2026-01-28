@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import * as productService from '../../services/productService'
+import * as cartitemService from '../../services/cartitemService'
 import axios from 'axios'
 
 import styles from '../ProductDetails/ProductDetails.module.css';
@@ -10,6 +11,7 @@ function ProductDetails({user}) {
 
   const [product, setProduct] = useState(null)
   const {id} = useParams()
+  const [cartItems, setCartItems] = useState([])
 
   const navigate = useNavigate()
 
@@ -30,6 +32,19 @@ function ProductDetails({user}) {
 
   }, [id])
 
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (!user) return
+      try {
+        const items = await cartitemService.getCartItems(user.cartId)
+        setCartItems(items)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchCartItems()
+  }, [user])
+
   const handleDelete = async (id) => {
 
     try {
@@ -45,6 +60,24 @@ function ProductDetails({user}) {
       console.log(error)
     }
 
+  }
+
+  const isInCart = (productId) => {
+    return cartItems.some(item => item.product_id === productId)
+  }
+
+  const handleAddToCart = async (productId) => {
+    if (!user) {
+      alert('You must be signed in to add items to cart')
+      return
+    }
+
+    try {
+      const newItem = await cartitemService.createCartItem(user.cartId, { product_id: productId, quantity: 1 })
+      setCartItems(prev => [...prev, newItem])
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   if (!product) {
@@ -71,6 +104,18 @@ function ProductDetails({user}) {
         <h3>Name: {product.name}</h3>
         <h4>Description: {product.description}</h4>
         <p>Price: ${product.price}</p>
+
+        {/* Add to Cart button for normal users */}
+        {product.is_available && !user?.is_admin && (
+          <button
+            onClick={() => handleAddToCart(product.id)}
+            disabled={isInCart(product.id)}
+            style={{ marginTop: '1rem' }}
+          >
+            {isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
+          </button>
+        )}
+
 
         {user && user.is_admin && (
         <div className={styles.adminActions}>

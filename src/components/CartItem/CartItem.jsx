@@ -48,6 +48,8 @@ function CartItem() {
       };
       try {
         await orderService.create(orderPayload);
+        await Promise.all(cartitems.map(item => cartitemService.deleteOne(item.id)));
+        setCardItem([]);
         navigate("/orders");
       } catch (error) {
         console.log(error.response?.data || error);
