@@ -66,7 +66,7 @@ function Service({user}) {
                 ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button>
                 : "Not Available"}
 
-              {user.is_admin && !service.is_available
+              {user?.is_admin && !service.is_available
                 ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button>
                 : ""}
             </div>

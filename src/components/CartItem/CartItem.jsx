@@ -9,11 +9,18 @@ import styles from './CartItem.module.css';
 function CartItem() {
 
   const [cartitems, setCardItem] = useState(null)
+  const [stockError, setStockError] = useState('')
   const {id} = useParams()
 
   const navigate = useNavigate()
 
-  
+     useEffect(() => {
+     if (stockError) {
+        const timer = setTimeout(() => setStockError(''), 4000)
+        return () => clearTimeout(timer)
+     }
+    }, [stockError])
+
 
   useEffect(() => {
 
@@ -34,26 +41,34 @@ function CartItem() {
   }, [id])
 
     const handleAddOrder = async () => {
-      if (!cartitems || cartitems.length === 0) return;
+     if (!cartitems || cartitems.length === 0) return;
 
-       const orderPayload = {
-        user_id: 0,
-        total_price: 0,
-        items: cartitems.map(cartItem => ({
-        product_id: cartItem.product_id,
-        product_name: "",
-        price: 0,
-        quantity: cartItem.quantity
-        }))
+     setStockError('')
+  
+     const orderPayload = {
+       user_id: 0,
+       total_price: 0,
+       items: cartitems.map(cartItem => ({
+          product_id: cartItem.product_id,
+          product_name: "",
+          price: 0,
+          quantity: cartItem.quantity
+       }))
       };
       try {
-        await orderService.create(orderPayload);
-        navigate("/orders");
-      } catch (error) {
-        console.log(error.response?.data || error);
-        alert("Failed to create order");
-      }
-    };
+       await orderService.create(orderPayload);
+       navigate("/orders");
+     } catch (error) {
+       const message = error.response?.data?.detail
+
+       // Show backend stock message in popup
+        if (message) {
+          setStockError(message)
+        } else {
+         setStockError("Failed to create order")
+        }
+     }
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -90,6 +105,19 @@ function CartItem() {
     <main className={styles.cart}>
       <section className={styles.cartWrapper}>
         <h1>Cart Items</h1>
+
+    {stockError && (
+     <div style={{
+       background: '#ffe0e0',
+        color: '#900',
+        padding: '10px',
+        borderRadius: '6px',
+        marginBottom: '1rem',
+        border: '1px solid #ffb3b3'
+     }}>
+        {stockError}
+     </div>
+    )}
 
         {cartitems.map(item => (
           <div key={item.id} className={styles.cartItem}>

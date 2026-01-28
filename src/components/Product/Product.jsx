@@ -104,17 +104,17 @@ function Product({user}) {
                 ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button>
                 : "Not Available"}
 
-              {user.is_admin && !product.is_available
+              {user?.is_admin && !product.is_available
                 ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button>
                 : ""}
 
               {product.is_available && !user?.is_admin && (
                 <button
                   onClick={() => handleAddToCart(product.id)}
-                  disabled={isInCart(product.id)}
+                  disabled={isInCart(product.id) || product.stock === 0}
                   style={{ marginLeft: '1rem' }}
                 >
-                  {isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
+                  {product.stock === 0 ? "Out of Stock" : isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
                 </button>
               )}
             </div>
