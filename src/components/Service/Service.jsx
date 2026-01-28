@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import * as serviceService from '../../services/serviceService'
 import { useNavigate } from 'react-router'
 
+import styles from '../Service/Service.module.css';
+
 function Service({user}) {
 
   const [services, setServices] = useState([])
@@ -31,25 +33,50 @@ function Service({user}) {
   )
 
   return (
-    <div>
-      <h1>Services</h1>
+  <div className={styles.container}>
+    <h1>Services</h1>
 
-      <input type="text" placeholder="Search services..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '1rem' }} />
+    <input
+      type="text"
+      placeholder="Search services..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className={styles.searchInput}
+      style={{ marginBottom: '1rem' }}
+    />
 
+    <div className={styles.serviceList}>
       {
-        filteredServices.map((service) => 
-          <div key={service.id}>
-            {service.image && <img src={service.image} alt="Uploaded preview" style={{ width: '300px' }} />}
+        filteredServices.map((service) =>
+          <div key={service.id} className={styles.serviceCard}>
+
+            {service.image && (
+              <img
+                src={service.image}
+                alt="Uploaded preview"
+                className={styles.serviceImage}
+              />
+            )}
+
             <h3>Name: {service.name}</h3>
             <h4>Price: {service.price}</h4>
-            {user && service.is_available ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button> : "Not Available"}
-            {user.is_admin && !service.is_available ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button> : ""}
+
+            <div className={styles.actions}>
+              {user && service.is_available
+                ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button>
+                : "Not Available"}
+
+              {user.is_admin && !service.is_available
+                ? <button onClick={() => {navigate(`/services/${service.id}`)}}>Details</button>
+                : ""}
+            </div>
+
           </div>
         )
       }
-
     </div>
-  )
+  </div>
+)
 }
 
 export default Service

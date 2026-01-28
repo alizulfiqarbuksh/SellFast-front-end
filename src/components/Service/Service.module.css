@@ -1,0 +1,48 @@
+/* Page container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Search input */
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Services grid */
+.serviceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual service card */
+.serviceCard {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+/* Service image */
+.serviceImage {
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Button row */
+.actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
