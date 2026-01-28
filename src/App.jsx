@@ -15,6 +15,8 @@ import OrderDetails from './components/OrderDetails/OrderDetails';
 import Service from './components/Service/Service';
 import ServiceDetails from './components/ServiceDetails/ServiceDetails';
 import ServiceForm from './components/ServiceForm/ServiceForm';
+import MyBooking from './components/MyBooking/MyBooking';
+import Booking from './components/Booking/Booking';
 
 import ProtectedAdminRoute from '../utils/ProtectedAdminRoute';
 import ProtectedOrdersRoute from '../utils/ProtectedOrdersRoute';
@@ -38,6 +40,7 @@ const App = () => {
         <Route path='/products/:id' element={<ProductDetails user={user} />} />
         <Route path='/services' element={<Service user={user} />} />
         <Route path='/services/:id' element={<ServiceDetails user={user} />} />
+        <Route path='/bookings/me' element={<MyBooking />} />
         
         <Route path='/products/create' element={
           <ProtectedAdminRoute user={user}>
@@ -57,6 +60,10 @@ const App = () => {
         } 
         />
         
+        <Route path='/bookings/admin' element={<ProtectedAdminRoute user={user}>
+          <Booking /></ProtectedAdminRoute>
+        } 
+        />
         <Route path='/products/:id/update' element={<ProtectedAdminRoute user={user}>
           <ProductForm user={user}/></ProtectedAdminRoute>
         } 
