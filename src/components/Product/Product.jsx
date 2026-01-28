@@ -6,28 +6,26 @@ import * as cartitemService from '../../services/cartitemService'
 import styles from '../Product/Product.module.css';
 
 function Product({user}) {
-
   const [products, setProducts] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [cartItems, setCartItems] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const navigate = useNavigate()
 
   useEffect(() => {
-
     const getProducts = async () => {
       try {
-        
+        setIsLoading(true)
         const products = await productService.show()
         setProducts(products)
-
       } catch (error) {
         console.log(error)
+      } finally {
+        setIsLoading(false)
       }
     }
-
     getProducts()
-
   }, [])
 
   // Fetch user's cart items
@@ -47,7 +45,6 @@ function Product({user}) {
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
-
 
   // Check if a product is already in cart
   const isInCart = (productId) => {
@@ -69,62 +66,104 @@ function Product({user}) {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+        <p>Loading products...</p>
+      </div>
+    )
+  }
+
   return (
-  <div className={styles.container}>
-    <h1>Products</h1>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Products</h1>
+        
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Search products by name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.searchInput}
+          />
+          <div className={styles.searchIcon}>🔍</div>
+        </div>
 
-    <input
-      type="text"
-      placeholder="Search products..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className={styles.searchInput}
-      style={{ marginBottom: '1rem' }}
-    />
+        {filteredProducts.length === 0 && searchTerm && (
+          <p className={styles.noResults}>No products found for "{searchTerm}"</p>
+        )}
+      </div>
 
-    <div className={styles.productList}>
-      {
-        filteredProducts.map((product) =>
+      <div className={styles.productList}>
+        {filteredProducts.map((product) => (
           <div key={product.id} className={styles.productCard}>
-
-            {product.image && (
-              <img
-                src={product.image}
-                alt="Uploaded preview"
-                className={styles.productImage}
-              />
-            )}
-
-            <h3>Name: {product.name}</h3>
-            <h4>Price: {product.price}</h4>
-            <h4>Stock: {product.stock}</h4>
-
-            <div className={styles.actions}>
-              {product.is_available
-                ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button>
-                : "Not Available"}
-
-              {user?.is_admin && !product.is_available
-                ? <button onClick={() => {navigate(`/products/${product.id}`)}}>Details</button>
-                : ""}
-
-              {product.is_available && !user?.is_admin && (
-                <button
-                  onClick={() => handleAddToCart(product.id)}
-                  disabled={isInCart(product.id) || product.stock === 0}
-                  style={{ marginLeft: '1rem' }}
-                >
-                  {product.stock === 0 ? 'Out of Stock' : isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
-                </button>
+            <div className={styles.imageContainer}>
+              {product.image ? (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className={styles.productImage}
+                  loading="lazy"
+                />
+              ) : (
+                <div className={styles.imagePlaceholder}>No Image</div>
+              )}
+              
+              {!product.is_available && (
+                <div className={styles.unavailableBadge}>Unavailable</div>
               )}
             </div>
 
+            <div className={styles.productInfo}>
+              <h3 className={styles.productName}>{product.name}</h3>
+              
+              <div className={styles.detailsGrid}>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Price:</span>
+                  <span className={styles.detailValue}>${product.price}</span>
+                </div>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Stock:</span>
+                  <span className={`${styles.stockValue} ${product.stock === 0 ? styles.outOfStock : ''}`}>
+                    {product.stock} units
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.actions}>
+                <button 
+                  className={styles.detailsButton}
+                  onClick={() => navigate(`/products/${product.id}`)}
+                >
+                  View Details
+                </button>
+
+                {product.is_available && !user?.is_admin && (
+                  <button
+                    className={`${styles.cartButton} ${
+                      isInCart(product.id) ? styles.inCart : 
+                      product.stock === 0 ? styles.disabled : ''
+                    }`}
+                    onClick={() => handleAddToCart(product.id)}
+                    disabled={isInCart(product.id) || product.stock === 0}
+                  >
+                    {product.stock === 0 
+                      ? 'Out of Stock' 
+                      : isInCart(product.id) 
+                        ? '✓ In Cart' 
+                        : 'Add to Cart'
+                    }
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-        )
-      }
+        ))}
+      </div>
     </div>
-  </div>
-)
+  )
 }
 
 export default Product

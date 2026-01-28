@@ -1,7 +1,10 @@
+// ProductForm.jsx
+
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import * as productService from '../../services/productService'
 import ImageUpload from '../ImageUpload/ImageUpload'
+import styles from './ProductForm.module.css'
 
 function ProductForm({user}) {
 
@@ -43,9 +46,9 @@ function ProductForm({user}) {
   },[id, isEdit, navigate])
 
   const handleSubmit = async (event) => {
-  event.preventDefault()
+    event.preventDefault()
 
-  const payload = {...formData, price: Number(formData.price), stock: Number(formData.stock)}
+    const payload = {...formData, price: Number(formData.price), stock: Number(formData.stock)}
 
     try {
 
@@ -72,39 +75,67 @@ function ProductForm({user}) {
   if (loading) return <p>Loading...</p>
 
   return (
-    <div>
-      <h1>{isEdit ? 'Update Product' : 'Add a Product'}</h1>
+    <main className={styles.productForm}>
+      <section className={styles.formWrapper}>
+        <h1>{isEdit ? 'Update Product' : 'Add a Product'}</h1>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
 
-        <label htmlFor="name">Name: </label>
-        <input onChange={handleChange} type="text" id='name' name='name' value={formData.name} />
+          <div className={styles.field}>
+            <label htmlFor="name">Name:</label>
+            <input onChange={handleChange} type="text" id='name' name='name' value={formData.name} required />
+          </div>
 
-        <label htmlFor="description">Description: </label>
-        <input onChange={handleChange} type="text" id='description' name='description' value={formData.description} />
+          <div className={styles.field}>
+            <label htmlFor="description">Description:</label>
+            <input onChange={handleChange} type="text" id='description' name='description' value={formData.description} required />
+          </div>
 
-        <label htmlFor="price">Price: </label>
-        <input onChange={handleChange} type="number" id='price' name='price' value={formData.price} />
+          <div className={styles.field}>
+            <label htmlFor="price">Price:</label>
+            <input onChange={handleChange} type="number" id='price' name='price' value={formData.price} required />
+          </div>
 
-        <label htmlFor="stock">Stock: </label>
-        <input onChange={handleChange} type="number" id='stock' name='stock' value={formData.stock} />
+          <div className={styles.field}>
+            <label htmlFor="stock">Stock:</label>
+            <input onChange={handleChange} type="number" id='stock' name='stock' value={formData.stock} required />
+          </div>
 
-        <label htmlFor="is_available">Available: </label>
-        <input onChange={handleChange} type="checkbox" id='is_available' name='is_available' checked={formData.is_available} />
+          <div className={styles.checkboxField}>
+            <input onChange={handleChange} type="checkbox" id='is_available' name='is_available' checked={formData.is_available} />
+            <label htmlFor="is_available">Available</label>
+          </div>
 
-        <ImageUpload
-            onUpload={(url) =>
-              setFormData(prev => ({ ...prev, image: url }))
-            }
-          />
+          <div className={styles.imageUploadSection}>
+            <label>Product Image:</label>
+            <div className={styles.imageUploadWrapper}>
+              <div className={styles.uploadIcon}>📸</div>
+              <ImageUpload
+                onUpload={(url) =>
+                  setFormData(prev => ({ ...prev, image: url }))
+                }
+              />
+              <p className={styles.uploadText}>Upload a product image</p>
+            </div>
+          </div>
 
-        <button type="submit">{isEdit ? 'Update' : 'Add'}</button>
+          {formData.image && (
+            <div className={styles.imagePreview}>
+              <span className={styles.imagePreviewLabel}>Preview:</span>
+              <img src={formData.image} alt="Uploaded preview" />
+            </div>
+          )}
 
-      </form>
+          <div className={styles.actions}>
+            <button type="submit">{isEdit ? 'Update' : 'Add'}</button>
+            <button type="button" onClick={() => navigate('/products')}>
+              Cancel
+            </button>
+          </div>
 
-      {formData.image && <img src={formData.image} alt="Uploaded preview" style={{ width: '300px' }} />}
-
-    </div>
+        </form>
+      </section>
+    </main>
   )
 }
 
