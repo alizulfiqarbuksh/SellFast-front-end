@@ -114,7 +114,7 @@ function Product({user}) {
                   disabled={isInCart(product.id) || product.stock === 0}
                   style={{ marginLeft: '1rem' }}
                 >
-                  {product.stock === 0 ? "Out of Stock" : isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
+                  {product.stock === 0 ? 'Out of Stock' : isInCart(product.id) ? 'Already in Cart' : 'Add to Cart'}
                 </button>
               )}
             </div>
