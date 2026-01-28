@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as bookingService from '../../services/bookingService'
 
 import styles from '../Booking/Booking.module.css';
+import { toast } from 'react-toastify';
 
 function Booking() {
   const [bookings, setBookings] = useState([])
@@ -27,6 +28,7 @@ function Booking() {
     try {
       const updated = await bookingService.update(bookingId, newStatus)
       setBookings(prev => prev.filter(booking => booking.id !== bookingId))
+      toast.success(`Booking ${newStatus}`)
     } catch (error) {
       console.log(error)
     }
