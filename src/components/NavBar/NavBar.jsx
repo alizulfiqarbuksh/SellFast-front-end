@@ -29,7 +29,10 @@ const NavBar = () => {
              <li><Link to='/services/create'>Add new service</Link></li>
             </div>
           )}
+          {!user.is_admin && (
           <li><Link to={`/cart-items/${user.cartId}`}>Cart</Link></li>
+          )
+          }
           <li><Link to={'/orders'}>{user.is_admin ? "Orders" : "My Orders"}</Link></li>
         </ul>
       ) : (
