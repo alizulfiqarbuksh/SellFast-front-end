@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router'
 import * as productService from '../../services/productService'
 import ImageUpload from '../ImageUpload/ImageUpload'
 import styles from './ProductForm.module.css'
+import { toast } from 'react-toastify'
 
 function ProductForm({user}) {
 
@@ -55,14 +56,17 @@ function ProductForm({user}) {
       if (isEdit) {
         await productService.update(id, payload)
         navigate(`/products/${id}`)
+        toast.success("Product updated successfully!")
       }
       else {
         await productService.create(payload)
         navigate("/products")
+        toast.success("Product created successfully!")
       }
       
     } catch (error) {
       console.log(error)
+      toast.error("Something went wrong")
     }
 
   }

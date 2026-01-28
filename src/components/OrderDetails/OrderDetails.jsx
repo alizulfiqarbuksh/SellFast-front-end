@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router';
 import * as orderService from '../../services/orderService'
+import { toast } from 'react-toastify';
 
 import styles from '../OrderDetails/OrderDetails.module.css';
 
@@ -12,7 +13,7 @@ function OrderDetails({user}) {
   const navigate = useNavigate() 
 
   useEffect(() => {
-  if (!user) return; // 🔴 wait until user is loaded
+  if (!user) return; //  wait until user is loaded
 
   const fetchOrder = async () => {
     try {
@@ -48,6 +49,7 @@ function OrderDetails({user}) {
     try {
       const updated = await orderService.update(order.id, { status: newStatus })
       setOrder(updated)
+       toast.success(`Order is ${newStatus}`)
       setNewStatus("")
     } catch (error) {
       console.error("Failed to update status", error)

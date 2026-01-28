@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import * as cartitemService from '../../services/cartitemService'
 import * as orderService from '../../services/orderService'
+import { toast } from 'react-toastify'
 
 import styles from './CartItem.module.css';
 
@@ -57,6 +58,7 @@ function CartItem() {
       await Promise.all(cartitems.map(item => cartitemService.deleteOne(item.id)));
       setCardItem([]);
       navigate("/orders");
+      toast.success("Order created successfully")
     } catch (error) {
       const message = error.response?.data?.detail
       if (message) {

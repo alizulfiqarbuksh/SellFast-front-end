@@ -23,6 +23,9 @@ import ProtectedOrdersRoute from '../utils/ProtectedOrdersRoute';
 
 import { UserContext } from './contexts/UserContext';
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 const App = () => {
   // Access the user object from UserContext
   // This gives us the currently logged-in user's information (username, email) that we extract from the token
@@ -33,7 +36,7 @@ const App = () => {
       <NavBar/>
       <Routes>
         {/* if the user is logged in we have the user object else we have the user set to null */}
-        <Route path='/' element={user ? <Dashboard /> : <Landing />} />
+        <Route path='/' element={user?.is_admin ? <Dashboard /> : <Product />} />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path='/sign-in' element={<SignInForm />} />
         <Route path='/products' element={<Product user={user} />} />
@@ -86,6 +89,15 @@ const App = () => {
         <Route path='/orders' element={<Order user={user}/>}/>
         <Route path='/orders/:id' element={<OrderDetails user={user} />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </>
   );
 };

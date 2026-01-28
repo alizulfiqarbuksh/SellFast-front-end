@@ -6,6 +6,8 @@ import * as bookingService from '../../services/bookingService'
 
 import styles from '../ServiceDetails/ServiceDetails.module.css';
 
+import { toast } from 'react-toastify'
+
 function ServiceDetails({user}) {
   const [service, setService] = useState(null)
   const {id} = useParams()
@@ -43,9 +45,12 @@ function ServiceDetails({user}) {
       const deletedService = await serviceService.deleteOne(id)
       if(deletedService) {
         navigate('/services')
+        toast.success("Service deleted successfully!")
       }
     } catch (error) {
       console.log(error)
+       toast.error("Could not delete service")
+
     }
   }
 
@@ -57,6 +62,7 @@ function ServiceDetails({user}) {
         booking_datetime: bookingDate
       })
       navigate('/bookings/me')
+      toast.success("Successfully booked")
     } catch (error) {
       console.log(error)
       if (error.response && error.response.data?.detail) {

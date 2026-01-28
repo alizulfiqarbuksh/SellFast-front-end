@@ -7,6 +7,8 @@ import * as cartitemService from '../../services/cartitemService'
 import styles from '../ProductDetails/ProductDetails.module.css';
 import ReviewSection from '../Review/ReviewSection'
 
+import { toast } from 'react-toastify'
+
 function ProductDetails({user}) {
   const [product, setProduct] = useState(null)
   const {id} = useParams()
@@ -49,9 +51,11 @@ function ProductDetails({user}) {
       const deletedProduct = await productService.deleteOne(id)
       if(deletedProduct) {
         navigate('/products')
+        toast.success("Product succefully deleted")
       }
     } catch (error) {
       console.log(error)
+      toast.error("Could not delete")
     }
   }
 
@@ -61,7 +65,7 @@ function ProductDetails({user}) {
 
   const handleAddToCart = async (productId) => {
     if (!user) {
-      alert('You must be signed in to add items to cart')
+      toast.warning('You must be signed in to add items to cart')
       return
     }
 

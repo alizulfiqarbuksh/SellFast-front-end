@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import * as serviceService from '../../services/serviceService'
 import ImageUpload from '../ImageUpload/ImageUpload'
 import styles from './ServiceForm.module.css'
+import { toast } from 'react-toastify'
 
 function ServiceForm({ user }) {
   const navigate = useNavigate()
@@ -57,12 +58,15 @@ function ServiceForm({ user }) {
       if (isEdit) {
         await serviceService.update(id, payload)
         navigate(`/services/${id}`)
+        toast.success("Service updated successfully!")
       } else {
         await serviceService.create(payload)
         navigate('/services')
+        toast.success("Service created successfully!")
       }
     } catch (error) {
       console.log(error)
+      toast.error("Something went wrong")
     }
   }
 

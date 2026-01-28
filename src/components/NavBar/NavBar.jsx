@@ -19,7 +19,7 @@ const NavBar = () => {
         <div className={styles.leftSection}>
           <ul className={styles.list}>
             {/* Always show these links */}
-            <li><Link className={styles.link} to="/">Home</Link></li>
+            {user?.is_admin && (<li><Link className={styles.link} to="/">Dashboard</Link></li>)}
             <li><Link className={styles.link} to="/products">Products</Link></li>
             <li><Link className={styles.link} to="/services">Services</Link></li>
 
@@ -34,7 +34,7 @@ const NavBar = () => {
                 {!user.is_admin && (
                   <li>
                     <Link className={styles.link} to={`/cart-items/${user.cartId}`}>
-                      🛒 Cart
+                      Cart
                     </Link>
                   </li>
                 )}
