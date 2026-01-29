@@ -1,55 +1,80 @@
-# React JWT Auth Template for FastAPI
+![SellFast Preview](./src/assets/img/lastprojectpic.png)
 
-A React + Vite frontend template for JWT authentication with a FastAPI backend.
+# SellFast – E-Commerce & Service Booking Platform
 
-## Setup
+**SellFast** is a full-stack e-commerce platform that allows users to purchase products and book services in one place. Users can browse available items, add them to a shopping cart, and complete checkout, while admins manage products, services, and orders through protected routes.
 
-1. Clone and remove git history:
-```bash
-git clone <repository-url> my-project
-cd my-project
-rm -rf .git
-```
+This project was built to demonstrate a modern e-commerce workflow with authentication, role-based access, service booking with date and time selection, and order management using a scalable backend architecture.
 
-2. Initialize a new git repository:
-```bash
-git init
-```
+# Getting started
 
-3. Install dependencies:
-```bash
-npm install
-```
+Front-end Repo: *[SellFast Front-end](https://github.com/alizulfiqarbuksh/SellFast-front-end)*  
+Back-end Repo: *[SellFast Back-end](https://github.com/alizulfiqarbuksh/SellFast-back-end)*
 
-4. Create your `.env` file:
-```bash
-VITE_BACK_END_SERVER_URL=http://localhost:8000/api
-```
+# Features
 
-5. Make your first commit:
-```bash
-git add .
-git commit -m "Initial commit"
-```
+Users can:
 
-6. Create a new repository on GitHub, then push:
-```bash
-git remote add origin <your-new-repo-url>
-git branch -M main
-git push -u origin main
-```
+- Register and log in using JWT authentication
+- Browse available **products** and **services**
+- View product and service details
+- Book services by selecting a **date and time**
+- Add products and services to the shopping cart
+- Proceed through checkout (no payment integration yet)
+- View order history and order status
 
-## Running the App
+Admins can:
 
-```bash
-npm run dev
-```
+- Create, update, and delete products
+- Create, update, and delete services
+- Manage user orders and order statuses
+- Access admin-only routes using role-based authorization
 
-The app will run at `http://localhost:5173` by default.
+# Authentication & Roles
 
-## Scripts
+- JWT-based authentication
+- Role-based access control
+  - **User**
+  - **Admin**
+- Protected routes on both frontend and backend
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+# Attributions
+
+External libraries and services used:
+
+- **FastAPI**
+- **PostgreSQL**
+- **pgAdmin**
+
+# Technologies used
+
+The technologies used to complete this project include:
+
+- **HTML**
+- **CSS**
+- **JavaScript**
+- **React**
+- **Python**
+- **FastAPI**
+- **PostgreSQL**
+- **pgAdmin**
+- Research resources such as **Google** and **YouTube**
+
+# Next steps
+
+Future enhancements planned for SellFast:
+
+- **Payment Integration**
+  Add secure online payments during checkout.
+
+- **Improved UI/UX**
+  More dynamic and responsive HTML and CSS.
+
+- **Enhanced Authentication**
+  Stronger security features and improved role management.
+
+- **User Profiles**
+  Allow users to manage personal details and view detailed order history.
+
+- **Admin Dashboard**
+  Analytics and advanced management tools for admins.
