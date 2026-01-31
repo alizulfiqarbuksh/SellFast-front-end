@@ -17,7 +17,7 @@ function MyBooking() {
         const bookings = await bookingService.myBookings()
         setMyBookings(bookings)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }

@@ -14,7 +14,7 @@ const show = async (productId) => {
     return response.data
 
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -27,7 +27,7 @@ const details = async (reviewId) => {
     return response.data
 
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 
@@ -40,7 +40,7 @@ const reviewStatShow = async (product_id) =>{
     return response.data
 
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 }
@@ -54,7 +54,7 @@ const create = async (productId, reviewData) => {
        return response.data 
 
   }catch(error){
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -68,7 +68,7 @@ const update = async (reviewId, reviewData) => {
    return response.data
 
   }catch(error){
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -80,7 +80,7 @@ const deleteOne = async(reviewId) => {
 
   }catch(error){
 
-     console.log(error)
+     console.error(error)
   }
 }
 

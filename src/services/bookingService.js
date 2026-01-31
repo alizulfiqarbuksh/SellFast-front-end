@@ -10,7 +10,7 @@ const create = async (bookingData) => {
     return response.data
 
   } catch (error) {
-    console.log(error)
+    console.error(error)
     throw error
   }
 }
@@ -23,7 +23,7 @@ const myBookings = async () => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -35,7 +35,7 @@ const show = async () => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -47,7 +47,7 @@ const update = async (id, status) => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 

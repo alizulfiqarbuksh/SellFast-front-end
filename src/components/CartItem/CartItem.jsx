@@ -28,7 +28,7 @@ function CartItem() {
         const foundCartItem = await cartitemService.getCartItems(id)
         setCardItem(foundCartItem)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -74,7 +74,7 @@ function CartItem() {
       await cartitemService.deleteOne(itemId)
       setCardItem(prev => prev.filter(item => item.id !== itemId))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -83,7 +83,7 @@ function CartItem() {
       await cartitemService.update(itemId, { quantity })
       // Show success feedback (could add a toast/notification here)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

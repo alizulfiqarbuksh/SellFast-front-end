@@ -26,7 +26,7 @@ const deleteOne = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -38,7 +38,7 @@ const update = async (id, cartItem) => {
     return response.data
 
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 

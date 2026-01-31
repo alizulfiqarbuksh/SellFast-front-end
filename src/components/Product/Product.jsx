@@ -20,7 +20,7 @@ function Product({user}) {
         const products = await productService.show()
         setProducts(products)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -37,7 +37,7 @@ function Product({user}) {
         const items = await cartitemService.getCartItems(user.cartId)
         setCartItems(items)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     getCartItems()
@@ -63,7 +63,7 @@ function Product({user}) {
       // Update local state so the UI updates immediately
       setCartItems(prev => [...prev, newItem])
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

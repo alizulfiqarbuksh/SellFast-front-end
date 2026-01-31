@@ -18,7 +18,7 @@ function Service({user}) {
         const service = await serviceService.show()
         setServices(service)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }

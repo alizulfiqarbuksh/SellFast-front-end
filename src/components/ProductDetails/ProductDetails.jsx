@@ -24,7 +24,7 @@ function ProductDetails({user}) {
         const foundProduct = await productService.details(id)
         setProduct(foundProduct)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -41,7 +41,7 @@ function ProductDetails({user}) {
         const items = await cartitemService.getCartItems(user.cartId)
         setCartItems(items)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     fetchCartItems()
@@ -55,7 +55,7 @@ function ProductDetails({user}) {
         toast.success("Product succefully deleted")
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error("Could not delete")
     }
   }
@@ -74,7 +74,7 @@ function ProductDetails({user}) {
       const newItem = await cartitemService.createCartItem(user.cartId, { product_id: productId, quantity: 1 })
       setCartItems(prev => [...prev, newItem])
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

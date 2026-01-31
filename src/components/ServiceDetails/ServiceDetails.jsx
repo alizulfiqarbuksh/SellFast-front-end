@@ -31,7 +31,7 @@ function ServiceDetails({user}) {
         const foundService = await serviceService.details(id)
         setService(foundService)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -48,7 +48,7 @@ function ServiceDetails({user}) {
         toast.success("Service deleted successfully!")
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
        toast.error("Could not delete service")
 
     }
@@ -64,7 +64,7 @@ function ServiceDetails({user}) {
       navigate('/bookings/me')
       toast.success("Successfully booked")
     } catch (error) {
-      console.log(error)
+      console.error(error)
       if (error.response && error.response.data?.detail) {
         setBookingError(error.response.data.detail)
       } else {
