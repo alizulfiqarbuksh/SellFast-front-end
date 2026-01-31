@@ -73,7 +73,7 @@ const UserDashboard = () => {
         upcomingBookings: Math.max(0, prev.upcomingBookings - 1)
       }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert('Failed to cancel booking');
     }
   };

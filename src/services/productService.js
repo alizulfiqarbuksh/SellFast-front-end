@@ -9,7 +9,7 @@ const show = async () => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -20,7 +20,7 @@ const details = async (id) => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -32,7 +32,7 @@ const deleteOne = async (id) => {
     return response.data
     
   } catch(error){
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -44,7 +44,7 @@ const create = async (product) => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -56,7 +56,7 @@ const update = async (id, product) => {
     return response.data
     
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 

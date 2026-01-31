@@ -15,7 +15,7 @@ function Booking() {
         const data = await bookingService.show()
         setBookings(data)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -30,7 +30,7 @@ function Booking() {
       setBookings(prev => prev.filter(booking => booking.id !== bookingId))
       toast.success(`Booking ${newStatus}`)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

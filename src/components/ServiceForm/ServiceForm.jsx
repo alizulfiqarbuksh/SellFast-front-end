@@ -37,7 +37,7 @@ function ServiceForm({ user }) {
         })
         setLoading(false)
       } catch (error) {
-        console.log(error)
+        console.error(error)
         navigate('/services', { replace: true })
       }
     }
@@ -65,7 +65,7 @@ function ServiceForm({ user }) {
         toast.success("Service created successfully!")
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error("Something went wrong")
     }
   }
